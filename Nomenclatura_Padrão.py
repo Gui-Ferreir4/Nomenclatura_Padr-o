@@ -9,7 +9,6 @@ st.markdown("Preencha os campos abaixo para gerar a nomenclatura padronizada da 
 
 # Campo de data com calendário
 data_input = st.date_input("Data da campanha:", value=date.today())
-data = data_input.strftime("%d%m%Y")  # Converte para o formato aaaammdd
 
 canal = st.selectbox(
     "Canal:",
