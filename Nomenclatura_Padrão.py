@@ -7,8 +7,8 @@ st.set_page_config(page_title="Plusoft - Nomenclatura Padrão", layout="centered
 st.title("📋 Plusoft - Nomenclatura Padrão")
 st.markdown("Preencha os campos abaixo para gerar a nomenclatura padronizada da campanha CRM.")
 
-# Campo de data com calendário
 data_input = st.date_input("Data da campanha:", value=date.today())
+data = data_input.strftime("%Y%m%d")  # Converte para o formato aaaammdd
 
 canal = st.selectbox(
     "Canal:",
