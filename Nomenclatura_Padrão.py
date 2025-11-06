@@ -21,21 +21,17 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Layout em colunas
-col1, col2 = st.columns(2)
+data_input = st.date_input("Data da campanha:", value=date.today())
+canal = st.selectbox(
+    "Canal:",
+    ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração"]
+)
+tipo_campanha = st.selectbox("Tipo de Campanha:", ["Pontual", "Recorrente"])
+responsavel = st.selectbox("Responsável:", ["Interno", "Externo"])
 
-with col1:
-    data_input = st.date_input("Data da campanha:", value=date.today())
-    canal = st.selectbox(
-        "Canal:",
-        ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração"]
-    )
-    tipo_campanha = st.selectbox("Tipo de Campanha:", ["Pontual", "Recorrente"])
-    responsavel = st.selectbox("Responsável:", ["Interno", "Externo"])
-
-with col2:
-    marca = st.text_input("Marca/Bandeira:")
-    publico = st.text_input("Público:")
-    plano_envio = st.text_input("Plano/Nome de Envio:")
+marca = st.text_input("Marca/Bandeira:")
+publico = st.text_input("Público:")
+plano_envio = st.text_input("Plano/Nome de Envio:")
 
 # Converte data para formato aaaammdd
 data = data_input.strftime("%Y%m%d")
