@@ -1,14 +1,15 @@
 import re
+from datetime import date
 import streamlit as st
 
 st.set_page_config(page_title="Plusoft - Nomenclatura Padrão", layout="centered")
 
 st.title("📋 Plusoft - Nomenclatura Padrão")
-
 st.markdown("Preencha os campos abaixo para gerar a nomenclatura padronizada da campanha CRM.")
 
-# Campos de entrada
-data = st.text_input("Data (aaaammdd):")
+# Campo de data com calendário
+data_input = st.date_input("Data da campanha:", value=date.today())
+data = data_input.strftime("%Y%m%d")  # Converte para o formato aaaammdd
 
 canal = st.selectbox(
     "Canal:",
@@ -54,13 +55,7 @@ if st.button("Gerar Nomenclatura"):
     audience = publico.replace(" ", "_")
     send_name = plano_envio.replace(" ", "_")
 
-    # Validação da data
-    date_pattern = r"^(?:19|20)\d\d(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$"
-    if not re.match(date_pattern, data):
-        st.error("❌ Data inválida. Use o formato aaaammdd.")
-        st.stop()
-
-    # Validação dos campos
+    # Validação dos campos de texto
     if not re.match(r"^[a-zA-Z0-9_\-ç]+$", brand) or \
        not re.match(r"^[a-zA-Z0-9_\-ç]+$", audience) or \
        not re.match(r"^[a-zA-Z0-9_\-ç]+$", send_name):
@@ -74,4 +69,3 @@ if st.button("Gerar Nomenclatura"):
 
     # Botão copiar
     st.button("📋 Copiar Resultado", on_click=lambda: st.toast("Copie o texto manualmente (função nativa do navegador)."))
-
