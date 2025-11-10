@@ -24,7 +24,7 @@ if "history" not in st.session_state:
 data_input = st.date_input("Data da campanha:", value=date.today())
 canal = st.selectbox(
     "Canal:",
-    ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração", "Multi-Canal]
+    ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração", "Multi-Canal"]
 )
 
 bandeira = st.text_input("Bandeira / Marca:")
