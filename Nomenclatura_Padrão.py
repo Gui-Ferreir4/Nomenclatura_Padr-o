@@ -20,20 +20,16 @@ def normalize_text(text):
 if "history" not in st.session_state:
     st.session_state.history = []
 
-# Layout em colunas
-col1, col2 = st.columns(2)
 
-with col1:
-    data_input = st.date_input("Data da campanha:", value=date.today())
-    canal = st.selectbox(
-        "Canal:",
-        ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração"]
-    )
+data_input = st.date_input("Data da campanha:", value=date.today())
+canal = st.selectbox(
+    "Canal:",
+    ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração"]
+)
 
-with col2:
-    bandeira = st.text_input("Bandeira / Marca:")
-    tipo_campanha = st.selectbox("Tipo de Campanha:", ["Pontual", "Recorrente"])
-    nomeacao = st.text_input("Nomeação:")
+bandeira = st.text_input("Bandeira / Marca:")
+tipo_campanha = st.selectbox("Tipo de Campanha:", ["Pontual", "Recorrente"])
+nomeacao = st.text_input("Nomeação:")
 
 # Mapeamentos abreviados
 canal_abbr = {
