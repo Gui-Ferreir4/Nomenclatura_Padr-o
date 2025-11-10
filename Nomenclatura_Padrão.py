@@ -4,9 +4,9 @@ from datetime import date
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Plusoft - Nomenclatura Padrão", layout="centered")
+st.set_page_config(page_title="Mkt Suíte - Nomenclatura Padrão", layout="centered")
 
-st.title("📋 Plusoft - Nomenclatura Padrão (Novo Formato)")
+st.title("📋 Mkt Suíte - Nomenclatura Padrão")
 st.markdown("Preencha os campos abaixo para gerar a nomenclatura no formato:")
 st.markdown("**AAAAMMDD_BANDEIRA-CANAL-TIPOCAMPANHAS-NOMEAÇÃO**")
 
