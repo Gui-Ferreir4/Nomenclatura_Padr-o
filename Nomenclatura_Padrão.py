@@ -7,7 +7,7 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="Plusoft - Nomenclatura Padrão", layout="centered")
 
 st.title("📋 Plusoft - Nomenclatura Padrão (Novo Formato)")
-st.markdown("Preencha os campos abaixo para gerar a nomenclatura no formato: **AAAAMMDD_BANDEIRA-CANAL-TIPOCAMPANHAS-NOMEAÇÃO**")
+st.markdown("Preencha os campos abaixo para gerar a nomenclatura no formato:\n **AAAAMMDD_BANDEIRA-CANAL-TIPOCAMPANHAS-NOMEAÇÃO**")
 
 # Função para normalizar texto (acentos, espaços, caracteres especiais)
 def normalize_text(text):
