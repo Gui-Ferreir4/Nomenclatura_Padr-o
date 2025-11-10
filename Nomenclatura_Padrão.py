@@ -6,14 +6,14 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Plusoft - Nomenclatura Padrão", layout="centered")
 
-st.title("📋 Plusoft - Nomenclatura Padrão")
-st.markdown("Preencha os campos abaixo para gerar a nomenclatura padronizada da campanha CRM.")
+st.title("📋 Plusoft - Nomenclatura Padrão (Novo Formato)")
+st.markdown("Preencha os campos abaixo para gerar a nomenclatura no formato: **AAAAMMDD_BANDEIRA-CANAL-TIPOCAMPANHAS-NOMEAÇÃO**")
 
 # Função para normalizar texto (acentos, espaços, caracteres especiais)
 def normalize_text(text):
-    text = unicodedata.normalize('NFKD', text)
-    text = text.encode('ascii', 'ignore').decode('utf-8')
-    text = text.replace(" ", "_")
+    text = unicodedata.normalize("NFKD", text)
+    text = text.encode("ascii", "ignore").decode("utf-8")
+    text = text.strip().replace(" ", "_").lower()
     return text
 
 # Inicializa histórico
@@ -21,22 +21,21 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Layout em colunas
-data_input = st.date_input("Data da campanha:", value=date.today())
-canal = st.selectbox(
-    "Canal:",
-    ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração"]
-)
-tipo_campanha = st.selectbox("Tipo de Campanha:", ["Pontual", "Recorrente"])
-responsavel = st.selectbox("Responsável:", ["Interno", "Externo"])
+col1, col2 = st.columns(2)
 
-marca = st.text_input("Marca/Bandeira:")
-publico = st.text_input("Público:")
-plano_envio = st.text_input("Plano/Nome de Envio:")
+with col1:
+    data_input = st.date_input("Data da campanha:", value=date.today())
+    canal = st.selectbox(
+        "Canal:",
+        ["Email", "SMS", "SMS - Com LP", "Push", "WhatsApp", "Social (Meta-Face)", "Extração"]
+    )
 
-# Converte data para formato aaaammdd
-data = data_input.strftime("%Y%m%d")
+with col2:
+    bandeira = st.text_input("Bandeira / Marca:")
+    tipo_campanha = st.selectbox("Tipo de Campanha:", ["Pontual", "Recorrente"])
+    nomeacao = st.text_input("Nomeação:")
 
-# Mapeamentos
+# Mapeamentos abreviados
 canal_abbr = {
     "Email": "emkt",
     "SMS": "sms",
@@ -47,33 +46,33 @@ canal_abbr = {
     "Extração": "ext"
 }
 
-responsavel_abbr = {"Interno": "int", "Externo": "ext"}
+# Converte e normaliza
+data = data_input.strftime("%Y%m%d")
+bandeira_norm = normalize_text(bandeira)
+canal_norm = canal_abbr.get(canal, "").lower()
+tipo_norm = normalize_text(tipo_campanha)
+nomeacao_norm = normalize_text(nomeacao)
 
-# Prévia dinâmica
-channel = canal_abbr.get(canal, "")
-responsible = responsavel_abbr.get(responsavel, "")
-brand = normalize_text(marca)
-audience = normalize_text(publico)
-send_name = normalize_text(plano_envio)
+# Monta prévia dinâmica
+preview = f"{data}_{bandeira_norm}-{canal_norm}-{tipo_norm}-{nomeacao_norm}"
 
-preview = f"{data}-{channel}-{tipo_campanha}-{responsible}-{brand}-{audience}-{send_name}".lower()
-st.markdown(f"🧩 **Prévia da Nomenclatura:** `{preview}`")
-
-# Validação dinâmica
-invalid_fields = []
+# Validação simples
 pattern = r"^[a-zA-Z0-9_\-ç]+$"
+invalid_fields = []
 
-if marca and not re.match(pattern, brand):
-    invalid_fields.append("Marca/Bandeira")
-if publico and not re.match(pattern, audience):
-    invalid_fields.append("Público")
-if plano_envio and not re.match(pattern, send_name):
-    invalid_fields.append("Plano/Nome de Envio")
+for campo, valor in {
+    "Bandeira": bandeira_norm,
+    "Nomeação": nomeacao_norm,
+}.items():
+    if valor and not re.match(pattern, valor):
+        invalid_fields.append(campo)
+
+st.markdown(f"🧩 **Prévia da Nomenclatura:** `{preview}`")
 
 if invalid_fields:
     st.warning(f"⚠️ Campos inválidos: {', '.join(invalid_fields)} — use apenas letras, números, traços ou underline.")
 
-# Geração
+# Geração final
 if st.button("Gerar Nomenclatura"):
     if invalid_fields:
         st.error("❌ Corrija os campos inválidos antes de gerar a nomenclatura.")
@@ -85,7 +84,7 @@ if st.button("Gerar Nomenclatura"):
         # Salva no histórico
         st.session_state.history.append(result)
 
-        # Botão de cópia (funcional com JavaScript)
+        # Botão de cópia funcional
         components.html(f"""
         <button style="
             background-color:#0077cc;
@@ -100,9 +99,9 @@ if st.button("Gerar Nomenclatura"):
         </button>
         """, height=60)
 
-        st.toast("Nomenclatura gerada!")
+        st.toast("Nomenclatura copiada!")
 
-# Histórico das últimas nomenclaturas
+# Histórico
 if st.session_state.history:
     st.markdown("### 🕒 Histórico recente")
     for item in reversed(st.session_state.history[-5:]):
