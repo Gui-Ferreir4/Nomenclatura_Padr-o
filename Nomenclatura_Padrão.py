@@ -84,23 +84,6 @@ if st.button("Gerar Nomenclatura"):
         # Salva no histórico
         st.session_state.history.append(result)
 
-        # Botão de cópia funcional
-        components.html(f"""
-        <button style="
-            background-color:#0077cc;
-            color:white;
-            border:none;
-            border-radius:5px;
-            padding:8px 16px;
-            cursor:pointer;
-        " onclick="navigator.clipboard.writeText('{result}');
-        alert('Nomenclatura copiada para a área de transferência!');">
-        📋 Copiar Resultado
-        </button>
-        """, height=60)
-
-        st.toast("Nomenclatura copiada!")
-
 # Histórico
 if st.session_state.history:
     st.markdown("### 🕒 Histórico recente")
